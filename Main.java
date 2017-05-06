@@ -27,7 +27,9 @@ public class Main extends JPanel {
    */
    public static void main(String[] args) {
    	  if(args.length != 2){
-      	System.out.println("Please make sure you are using the correct format");
+      	System.out.println("Please make sure you are using the correct format: java Main numWordsInFile numWordsToPrint\n"
+      		+ "For example:   java Main 10 2   if there are 10 words in the file and I want to display 2");
+      	return;
       }
       // take care of comm line arguments
    	  max = Integer.parseInt(args[0]);
@@ -37,21 +39,28 @@ public class Main extends JPanel {
       JFrame.setDefaultLookAndFeelDecorated(true);
       JFrame mainFrame = new JFrame("Learn Chinese");
       mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-      mainFrame.setSize(800, 500);
+      mainFrame.setSize(1200, 900);
 
       // create panels for text and buttons
-      panel = new JPanel(new GridLayout(0, 2));
-      buttonPanel = new JPanel(new GridLayout(0, 2));
+      panel = new JPanel(new GridLayout(0, 3));
+      buttonPanel = new JPanel(new GridLayout(0, 3));
 
       //mainFrame.add(panel);
       JLabel jlabel = new JLabel("Learn Chinese");
       jlabel.setFont(new Font("Courier New", Font.PLAIN, 50));
       JLabel jlabel2 = new JLabel("");
+      JLabel jlabel3 = new JLabel("");
    	  panel.add(jlabel);
    	  panel.add(jlabel2);
+   	  panel.add(jlabel3);
    	  addText();
       addButtons();
 
+      JLayeredPane layers = new JLayeredPane();
+      //buttonPanel.setOpaque(false);
+      //panel.setOpaque(false);
+		layers.add(buttonPanel, new Integer(2), 0); // add transparent panel first
+		//layers.add(panel, 2);
 
       	JPanel overlay = new JPanel();
 		overlay.setLayout( new OverlayLayout(overlay) );
@@ -70,8 +79,7 @@ public class Main extends JPanel {
 
 
    public static void addButtons(){
-   	JLabel blank = new JLabel("hi");
-   	//blank.setVisible(false);
+   	JLabel blank = new JLabel("");
    	buttonPanel.add(blank);
    	buttonPanel.add(blank);
    	buttonPanel.add(blank);
@@ -119,7 +127,16 @@ public class Main extends JPanel {
 				jlabel1.setFont(new Font("Courier New", Font.PLAIN, 30));
 				jlabel2.setFont(new Font("Courier New", Font.PLAIN, 30));
 				panel.add(jlabel1);
-				panel.add(jlabel2);
+				jlabel2.setVisible(false);
+				JButton j = new JButton("Click here to see the meaning of this word");
+      			j.addActionListener(new ActionListener(){
+      				public void actionPerformed(ActionEvent e){
+    					j.setVisible(false);
+    					jlabel2.setVisible(true);
+  					}	
+      			});
+      			panel.add(j);
+      			panel.add(jlabel2);
 				i++;
       		}
       	} 
