@@ -11,6 +11,7 @@ import java.awt.event.*;
 import java.util.StringTokenizer;
 import javax.swing.OverlayLayout;
 import javax.swing.JLayeredPane;
+import javax.swing.JScrollPane;
 
 public class Main extends JPanel {
 
@@ -23,14 +24,14 @@ public class Main extends JPanel {
 
 
 
-   /* main
-   */
    public static void main(String[] args) {
+   	  // error message if comm line args incorrect
    	  if(args.length != 2){
       	System.out.println("Please make sure you are using the correct format: java Main numWordsInFile numWordsToPrint\n"
       		+ "For example:   java Main 10 2   if there are 10 words in the file and I want to display 2");
       	return;
       }
+
       // take care of comm line arguments
    	  max = Integer.parseInt(args[0]);
       numToPrint = Integer.parseInt(args[1]);
@@ -45,31 +46,37 @@ public class Main extends JPanel {
       panel = new JPanel(new GridLayout(0, 3));
       buttonPanel = new JPanel(new GridLayout(0, 3));
 
-      //mainFrame.add(panel);
+      // create main titles (text)
       JLabel jlabel = new JLabel("Learn Chinese");
-      jlabel.setFont(new Font("Courier New", Font.PLAIN, 50));
-      JLabel jlabel2 = new JLabel("");
+      jlabel.setFont(new Font("Roboto", Font.PLAIN, 50));
+      JLabel jlabel2 = new JLabel("Made by Areeba Turabi May 2017");
+      jlabel2.setFont(new Font("Roboto", Font.PLAIN, 10));
+      jlabel2.setVerticalAlignment(JLabel.TOP);
       JLabel jlabel3 = new JLabel("");
-   	  panel.add(jlabel);
+
+      // add titles to panel
    	  panel.add(jlabel2);
+   	  panel.add(jlabel);
    	  panel.add(jlabel3);
    	  addText();
       addButtons();
 
+
       JLayeredPane layers = new JLayeredPane();
-      //buttonPanel.setOpaque(false);
-      //panel.setOpaque(false);
+
 		layers.add(buttonPanel, new Integer(2), 0); // add transparent panel first
-		//layers.add(panel, 2);
 
       	JPanel overlay = new JPanel();
 		overlay.setLayout( new OverlayLayout(overlay) );
-		//overlay.add(buttonPanel, BorderLayout.CENTER); // add transparent panel first
 		overlay.add(panel, BorderLayout.CENTER);
 
 
-		mainFrame.setLayout(new BorderLayout()); 
-		mainFrame.add(overlay);
+		mainFrame.setLayout(new BorderLayout());
+
+		//make scrollable
+		JScrollPane scroll = new JScrollPane(overlay);
+
+		mainFrame.add(scroll);
 
       mainFrame.setVisible(true);
 
@@ -109,7 +116,6 @@ public class Main extends JPanel {
       try{
       	for(int i = 0; i < numToPrint;){
       		randomNum = rand.nextInt((max - 1 - min) + 1) + min;
-      		 System.out.println(randomNum);
       		if(lines[randomNum] == 0){
       			lines[randomNum] = 1;
       			fs= new FileInputStream("chinese.txt");
@@ -124,11 +130,12 @@ public class Main extends JPanel {
 				JLabel jlabel2 = new JLabel(meaning);
 				jlabel1.setHorizontalAlignment(JLabel.CENTER);
 				jlabel2.setHorizontalAlignment(JLabel.CENTER);
-				jlabel1.setFont(new Font("Courier New", Font.PLAIN, 30));
-				jlabel2.setFont(new Font("Courier New", Font.PLAIN, 30));
+				jlabel1.setFont(new Font("Roboto", Font.PLAIN, 30));
+				jlabel2.setFont(new Font("Roboto", Font.PLAIN, 30));
 				panel.add(jlabel1);
 				jlabel2.setVisible(false);
 				JButton j = new JButton("Click here to see the meaning of this word");
+				// listener for button: make text visible and button disappear
       			j.addActionListener(new ActionListener(){
       				public void actionPerformed(ActionEvent e){
     					j.setVisible(false);
