@@ -8,9 +8,6 @@ public class Translations{
 
     private Random rand = new Random();
 
-    public final int ENGLISH = 0;
-    public final int CHINESE = 1;
-
     /* Create object from text file.
      * Assumes text file is a .csv in the following format:
      * 
@@ -31,11 +28,12 @@ public class Translations{
         }
     }
 
-    //Get num words randomly from the chosen array
-    public String[] getRandomWords(int num, int array){
+    //Get num words randomly
+    //Returned as [en1, ch1, en2, ch2 ... enN, chN]
+    public String[] getRandomWords(int num){
         if(num > numTranslations) return null;
 
-        String[] result = new String[num];
+        String[] result = new String[num*2];
         int[] lines = new int[numTranslations]; //Keep track of indices used
 
         //Choose ArrayList indices without repeating
@@ -43,11 +41,8 @@ public class Translations{
             int randomNum = rand.nextInt(numTranslations);
             if(lines[randomNum] == 0){
                 lines[randomNum] = 1; //Mark as used
-                if(array == ENGLISH){
-                    result[i] = english.get(randomNum);
-                } else if(array == CHINESE) {
-                    result[i] = chinese.get(randomNum);
-                }
+                result[2*i] = english.get(i);
+                result[2*i+1] = chinese.get(i);
                 i++;
             }
         }
