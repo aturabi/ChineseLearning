@@ -24,9 +24,6 @@ public class LearnChineseGUI implements ActionListener{
 
     Translations translations;
 
-    final int ENGLISH = 0;
-    final int CHINESE = 1;
-
     //Create the GUI for our program
     @SuppressWarnings("unchecked")
     public void createGUI(){
@@ -87,9 +84,11 @@ public class LearnChineseGUI implements ActionListener{
         centerP.setLayout(new GridLayout(1, 2, 10, 0)); //1x2 with 10px hgap
         centerP.setBackground(panelColor);
         buttonP = new JPanel();
+        buttonP.setLayout(new BoxLayout(buttonP, BoxLayout.PAGE_AXIS));
         textP = new JPanel();
-        centerP.add(buttonP);
+        textP.setLayout(new BoxLayout(textP, BoxLayout.PAGE_AXIS));
         centerP.add(textP);
+        centerP.add(buttonP);
 
         mainP.add(topP, BorderLayout.PAGE_START);
         mainP.add(centerP, BorderLayout.CENTER);
@@ -102,32 +101,36 @@ public class LearnChineseGUI implements ActionListener{
     private void addButtons(int num){
         buttonP.removeAll();
         for(int i = 0; i < num; i++){
-            JButton j = new JButton("Click here to see the meaning of this word");
+            JButton j = new JButton("addButtons");
             j.addActionListener(new ActionListener(){
                     public void actionPerformed(ActionEvent e){
-                        j.setVisible(true);
+                        j.setVisible(false);
                     }
                 });
             buttonP.add(j);
         }
     }
 
-    private void addText(int num, String[] shown, String[] hidden){
+    private void addText(int num, String[] words, int lang){
         textP.removeAll();
         for(int i = 0; i < num; i++){
-            JLabel wordL = new JLabel(shown[i]);
-            JLabel meaningL = new JLabel(hidden[i]);
+            //Take advantage of english = 0, chinese = 1 for lang
+            //This just avoids a few if-statements
+            JLabel wordL = new JLabel(words[2*i + lang]);
+            JLabel meaningL = new JLabel(words[2*i + (lang+1)%2]);
             meaningL.setVisible(false);
-            JButton j = new JButton("Click here to see the meaning of this word");
+            /*
+            JButton j = new JButton("addText");
             j.addActionListener(new ActionListener(){
-                    public void actionPerformed(ActionEvent e){
-                        j.setVisible(false);
-                        meaningL.setVisible(true);
-                    }	
-                });
+            public void actionPerformed(ActionEvent e){
+            j.setVisible(false);
+            meaningL.setVisible(true);
+            }	
+            });
             textP.add(j);
+             */
             textP.add(wordL);
-            textP.add(meaningL);
+            buttonP.add(meaningL);
         }
     }
 
@@ -165,22 +168,21 @@ public class LearnChineseGUI implements ActionListener{
                     translations.readFile(fileName);
                     enableInput();
                 } catch(Exception ioex){
-                    JOptionPane.showMessageDialog(null,"Error reading file","Error",JOptionPane.ERROR_MESSAGE);
                     translations = null;
                     disableInput();
+                    JOptionPane.showMessageDialog(null,"Error reading file","Error",JOptionPane.ERROR_MESSAGE);
                 }
             }
         } else if(e.getSource() == goB){
             int numWords = numWordsCB.getSelectedIndex() + 1;
             int lang = langCB.getSelectedIndex();
-            String[] english = translations.getRandomWords(numWords, ENGLISH);
-            String[] chinese = translations.getRandomWords(numWords, CHINESE);
-            if(lang == ENGLISH){
-                addText(numWords, english, chinese);
-            } else if(lang == CHINESE){
-                addText(numWords, chinese, english);
-            }
+            String[] words = translations.getRandomWords(numWords);
+            addText(numWords, words, lang);
             addButtons(numWords);
+
+            //Force components to update
+            textP.validate();
+            buttonP.validate();
         }
     }
 }
