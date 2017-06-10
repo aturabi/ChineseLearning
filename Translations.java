@@ -41,8 +41,8 @@ public class Translations{
             int randomNum = rand.nextInt(numTranslations);
             if(lines[randomNum] == 0){
                 lines[randomNum] = 1; //Mark as used
-                result[2*i] = english.get(i);
-                result[2*i+1] = chinese.get(i);
+                result[2*i] = english.get(randomNum);
+                result[2*i+1] = chinese.get(randomNum);
                 i++;
             }
         }
