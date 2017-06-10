@@ -14,8 +14,11 @@ public class LearnChineseGUI implements ActionListener{
     JComboBox langCB;
     JButton goB;
     JButton showB;
+    JPanel topP;
+    JPanel centerP;
+    JPanel wordP;
     JPanel buttonP;
-    JPanel textP;
+    JPanel meaningP;
 
     Color panelColor = new Color(194,214,235); //Metallic blue
     Color bgColor = new Color(255,250,240); //Light beige
@@ -47,7 +50,7 @@ public class LearnChineseGUI implements ActionListener{
         mainP.setBackground(panelColor);
 
         //Set up top panel with combo boxes and Go button
-        JPanel topP = new JPanel();
+        topP = new JPanel();
         topP.setPreferredSize(new Dimension(750, 75));
         topP.setLayout(new GridLayout(1, 3, 10, 0)); //1x3 with 10px hgap
 
@@ -79,16 +82,21 @@ public class LearnChineseGUI implements ActionListener{
         topP.add(goP);
 
         //Set up structure of center panel for text and buttons
-        JPanel centerP = new JPanel();
+        centerP = new JPanel();
         centerP.setPreferredSize(new Dimension(750, 600));
-        centerP.setLayout(new GridLayout(1, 2, 10, 0)); //1x2 with 10px hgap
+        centerP.setLayout(new GridLayout(1, 3, 10, 0)); //1x2 with 10px hgap
         centerP.setBackground(panelColor);
+
+        wordP = new JPanel();
+        wordP.setLayout(new GridLayout(0, 1, 0, 10)); //nx1 with 10px vgap
         buttonP = new JPanel();
-        buttonP.setLayout(new BoxLayout(buttonP, BoxLayout.PAGE_AXIS));
-        textP = new JPanel();
-        textP.setLayout(new BoxLayout(textP, BoxLayout.PAGE_AXIS));
-        centerP.add(textP);
+        buttonP.setLayout(new GridLayout(0, 1, 0, 10));
+        meaningP = new JPanel();
+        meaningP.setLayout(new GridLayout(0, 1, 0, 10));
+
+        centerP.add(wordP);
         centerP.add(buttonP);
+        centerP.add(meaningP);
 
         mainP.add(topP, BorderLayout.PAGE_START);
         mainP.add(centerP, BorderLayout.CENTER);
@@ -97,40 +105,30 @@ public class LearnChineseGUI implements ActionListener{
         frame.setVisible(true);
     }
 
-    //Dynamically add buttons onto the GUI
-    private void addButtons(int num){
-        buttonP.removeAll();
-        for(int i = 0; i < num; i++){
-            JButton j = new JButton("addButtons");
-            j.addActionListener(new ActionListener(){
-                    public void actionPerformed(ActionEvent e){
-                        j.setVisible(false);
-                    }
-                });
-            buttonP.add(j);
-        }
+    //Dynamically add a button onto the GUI
+    //On click, reveal associated label
+    private void addButton(JLabel label){
+        JButton j = new JButton("Click to view translation");
+        j.addActionListener(new ActionListener(){
+                public void actionPerformed(ActionEvent e){
+                    j.setVisible(false);
+                    label.setVisible(true);
+                }
+            });
+        buttonP.add(j);
     }
 
     private void addText(int num, String[] words, int lang){
-        textP.removeAll();
         for(int i = 0; i < num; i++){
             //Take advantage of english = 0, chinese = 1 for lang
             //This just avoids a few if-statements
             JLabel wordL = new JLabel(words[2*i + lang]);
             JLabel meaningL = new JLabel(words[2*i + (lang+1)%2]);
             meaningL.setVisible(false);
-            /*
-            JButton j = new JButton("addText");
-            j.addActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent e){
-            j.setVisible(false);
-            meaningL.setVisible(true);
-            }	
-            });
-            textP.add(j);
-             */
-            textP.add(wordL);
-            buttonP.add(meaningL);
+
+            addButton(meaningL);
+            wordP.add(wordL);
+            meaningP.add(meaningL);
         }
     }
 
@@ -170,19 +168,27 @@ public class LearnChineseGUI implements ActionListener{
                 } catch(Exception ioex){
                     translations = null;
                     disableInput();
-                    JOptionPane.showMessageDialog(null,"Error reading file","Error",JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null,"Error reading file\n" + ioex.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+                } finally {
+                    topP.revalidate();
+                    topP.repaint();
                 }
             }
         } else if(e.getSource() == goB){
             int numWords = numWordsCB.getSelectedIndex() + 1;
             int lang = langCB.getSelectedIndex();
             String[] words = translations.getRandomWords(numWords);
-            addText(numWords, words, lang);
-            addButtons(numWords);
 
-            //Force components to update
-            textP.validate();
-            buttonP.validate();
+            //Remove old components
+            wordP.removeAll();
+            buttonP.removeAll();
+            meaningP.removeAll();
+
+            addText(numWords, words, lang);
+
+            //Force components to repaint
+            centerP.revalidate();
+            centerP.repaint();
         }
     }
 }
