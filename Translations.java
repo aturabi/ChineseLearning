@@ -32,7 +32,7 @@ public class Translations{
     //Returned as [en1, ch1, en2, ch2 ... enN, chN]
     public String[] getRandomWords(int num){
         if(num > numTranslations) return null;
-
+	System.out.println("HI");
         String[] result = new String[num*2];
 	
 	//Shuffle arrays of english and chinese words
@@ -55,21 +55,21 @@ public class Translations{
 
     //swaps both english and chinese words at indexes 1 and 2
     public void swap(int index1, int index2){
-      String temp = english[index1];
-      english[index1] = english[index2];
-      english[index2] = temp;
+      String temp = english.get(index1);
+      english.set(index1, english.get(index2));
+      english.set(index2, temp);
 
-      temp = chinese[index1];
-      chinese[index1] = chinese[index2];
-      chinese[index2] = chinese[index1];
-
+      temp = chinese.get(index1);
+      chinese.set(index1, chinese.get(index2));
+      chinese.set(index2, chinese.get(index1));
+     System.out.println("Swapping");
     }
 
 
    //shuffle array of chinese and english words
    public void shuffleArrays(){
-     for(int i = numTranslations; i > 0; i++){
-	int randomNum = rand.nextInt(numTranslations);
+     for(int i = numTranslations - 1; i > 0; i--){
+	int randomNum = rand.nextInt(numTranslations - 1);
 	swap(i-1, randomNum);
      }
 

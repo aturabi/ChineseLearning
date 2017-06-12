@@ -124,6 +124,8 @@ public class LearnChineseGUI implements ActionListener{
             //This just avoids a few if-statements
             JLabel wordL = new JLabel(words[2*i + lang]);
             JLabel meaningL = new JLabel(words[2*i + (lang+1)%2]);
+	    wordL.setHorizontalAlignment(JLabel.CENTER);
+            meaningL.setHorizontalAlignment(JLabel.CENTER);
             meaningL.setVisible(false);
 
             addButton(meaningL);
