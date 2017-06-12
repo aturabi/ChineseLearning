@@ -94,9 +94,13 @@ public class LearnChineseGUI implements ActionListener{
         meaningP = new JPanel();
         meaningP.setLayout(new GridLayout(0, 1, 0, 10));
 
-        centerP.add(wordP);
-        centerP.add(buttonP);
-        centerP.add(meaningP);
+	JScrollPane scroll1 = new JScrollPane(wordP);
+        JScrollPane scroll2 = new JScrollPane(buttonP);
+        JScrollPane scroll3 = new JScrollPane(meaningP);
+
+        centerP.add(scroll1);
+        centerP.add(scroll2);
+        centerP.add(scroll3);
 
         mainP.add(topP, BorderLayout.PAGE_START);
         mainP.add(centerP, BorderLayout.CENTER);
