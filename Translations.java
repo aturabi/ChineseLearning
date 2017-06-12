@@ -34,17 +34,15 @@ public class Translations{
         if(num > numTranslations) return null;
 
         String[] result = new String[num*2];
-        int[] lines = new int[numTranslations]; //Keep track of indices used
+	
+	//Shuffle arrays of english and chinese words
+	shuffleArrays();
 
         //Choose ArrayList indices without repeating
         for(int i = 0; i < num;){
-            int randomNum = rand.nextInt(numTranslations);
-            if(lines[randomNum] == 0){
-                lines[randomNum] = 1; //Mark as used
-                result[2*i] = english.get(randomNum);
-                result[2*i+1] = chinese.get(randomNum);
-                i++;
-            }
+           result[2*i] = english.get(i);
+           result[2*i+1] = chinese.get(i);
+           i++;
         }
 
         return result;
@@ -53,4 +51,31 @@ public class Translations{
     public int getNumTranslations(){
         return numTranslations;
     }
+
+
+    //swaps both english and chinese words at indexes 1 and 2
+    public void swap(int index1, int index2){
+      String temp = english[index1];
+      english[index1] = english[index2];
+      english[index2] = temp;
+
+      temp = chinese[index1];
+      chinese[index1] = chinese[index2];
+      chinese[index2] = chinese[index1];
+
+    }
+
+
+   //shuffle array of chinese and english words
+   public void shuffleArrays(){
+     for(int i = numTranslations; i > 0; i++){
+	int randomNum = rand.nextInt(numTranslations);
+	swap(i-1, randomNum);
+     }
+
+
+
+   }
+
+
 }
