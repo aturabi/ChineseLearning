@@ -140,7 +140,7 @@ public class LearnChineseGUI implements ActionListener{
         langCB.setSelectedIndex(0);
         numWordsCB.setEnabled(true);
         //Add options for num words, 10 max
-        for(int i = 1; i <= 10 && i <= translations.getNumTranslations(); ++i){
+        for(int i = 1; i <= 1000 && i <= translations.getNumTranslations(); ++i){
             numWordsCB.insertItemAt(i, i-1);
         }
         numWordsCB.setSelectedIndex(0);
