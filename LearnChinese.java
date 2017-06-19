@@ -43,7 +43,7 @@ public class LearnChinese extends JPanel {
         JFrame.setDefaultLookAndFeelDecorated(true);
         JFrame mainFrame = new JFrame("Learn Chinese");
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        mainFrame.setSize(1200, 900);
+        //mainFrame.setSize(1200, 900);
 
         // create panels for text and buttons
         panel = new JPanel(new GridLayout(0, 3));
