@@ -5,15 +5,15 @@ import javax.swing.event.*;
 import javax.swing.border.*;
 
 public class LearnChineseGUI implements ActionListener{
-	//Dimensions
-	private int WINDOW_WIDTH = 1000;
-	private int WINDOW_HEIGHT = 1000;
-	private int TOP_WIDTH = 900;
-	private int TOP_HEIGHT = 75;
-	private int CENTER_WIDTH = 900;
-	private int CENTER_HEIGHT = 825;
-    private int FONT_SIZE = 25;
-	
+
+    int WINDOW_WIDTH = 1000;
+    int WINDOW_HEIGHT = 1000;
+    int TOP_WIDTH = 900;
+    int TOP_HEIGHT = 75;
+    int CENTER_WIDTH = 900;
+    int CENTER_HEIGHT = 825;
+    int FONT_SIZE = 24;
+
     //GUI components
     JFrame frame;
     JMenuBar menuBar;
@@ -29,9 +29,10 @@ public class LearnChineseGUI implements ActionListener{
     JPanel buttonP;
     JPanel meaningP;
 
+    JFileChooser fc = new JFileChooser();
     Color panelColor = new Color(194,214,235); //Metallic blue
     Color bgColor = new Color(255,250,240); //Light beige
-	Font font = new Font(Font.DIALOG, Font.PLAIN, FONT_SIZE);
+    Font font = new Font(Font.DIALOG, Font.PLAIN, FONT_SIZE);
 
     String fileName;
 
@@ -40,16 +41,15 @@ public class LearnChineseGUI implements ActionListener{
     //Create the GUI for our program
     @SuppressWarnings("unchecked")
     public void createGUI(){
-
+        //Set up dimensions
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        WINDOW_WIDTH = screenSize.width*2/3;
+        WINDOW_WIDTH = screenSize.width * 2 / 3;
         WINDOW_HEIGHT = screenSize.height;
         TOP_WIDTH = WINDOW_WIDTH - 100;
-        TOP_HEIGHT = WINDOW_WIDTH*1/10;
+        TOP_HEIGHT = WINDOW_HEIGHT * 1 / 10;
         CENTER_WIDTH = TOP_WIDTH;
-        CENTER_HEIGHT = WINDOW_WIDTH*7/10;
-        FONT_SIZE = WINDOW_WIDTH/36;
-
+        CENTER_HEIGHT = WINDOW_HEIGHT * 7 / 10;
+        FONT_SIZE = WINDOW_WIDTH / 36;
 
         //Set up frame
         frame = new JFrame("Learn Chinese!  No file loaded");
@@ -92,7 +92,8 @@ public class LearnChineseGUI implements ActionListener{
         numWordsP.add(numWordsCB);
 
         JPanel goP = new JPanel();
-        goP.setBorder(new EmptyBorder(5, 5, 5, 5));
+        goP.setLayout(new BorderLayout());
+        goP.setBorder(new EmptyBorder(10, 10, 10, 10));
         goB = new JButton("Please choose a file first");
         goB.setEnabled(false);
         goB.addActionListener(this);
@@ -115,7 +116,7 @@ public class LearnChineseGUI implements ActionListener{
         meaningP = new JPanel();
         meaningP.setLayout(new GridLayout(0, 1, 0, 10));
 
-	JScrollPane scroll1 = new JScrollPane(wordP);
+        JScrollPane scroll1 = new JScrollPane(wordP);
         JScrollPane scroll2 = new JScrollPane(buttonP);
         JScrollPane scroll3 = new JScrollPane(meaningP);
 
@@ -134,7 +135,7 @@ public class LearnChineseGUI implements ActionListener{
     //On click, reveal associated label
     private void addButton(JLabel label){
         JButton j = new JButton("View translation");
-		j.setFont(font);
+        j.setFont(font);
         j.addActionListener(new ActionListener(){
                 public void actionPerformed(ActionEvent e){
                     j.setVisible(false);
@@ -149,10 +150,10 @@ public class LearnChineseGUI implements ActionListener{
             //Take advantage of english = 0, chinese = 1 for lang
             //This just avoids a few if-statements
             JLabel wordL = new JLabel(words[2*i + lang]);
+            wordL.setFont(font);
             JLabel meaningL = new JLabel(words[2*i + (lang+1)%2]);
-			wordL.setFont(font);
-			meaningL.setFont(font);
-	    	wordL.setHorizontalAlignment(JLabel.CENTER);
+            meaningL.setFont(font);
+            wordL.setHorizontalAlignment(JLabel.CENTER);
             meaningL.setHorizontalAlignment(JLabel.CENTER);
             meaningL.setVisible(false);
 
@@ -162,13 +163,13 @@ public class LearnChineseGUI implements ActionListener{
         }
     }
 
-    @SuppressWarnings("unchecked") //Risky business
+    @SuppressWarnings("unchecked")
     private void enableInput(){
         langCB.setEnabled(true);
         langCB.setSelectedIndex(0);
         numWordsCB.setEnabled(true);
         //Add options for num words, 10 max
-        for(int i = 1; i <= 6 && i <= translations.getNumTranslations(); ++i){
+        for(int i = 1; i <= 10 && i <= translations.getNumTranslations(); ++i){
             numWordsCB.insertItemAt(i, i-1);
         }
         numWordsCB.setSelectedIndex(0);
@@ -188,7 +189,6 @@ public class LearnChineseGUI implements ActionListener{
     public void actionPerformed(ActionEvent e){
         if(e.getSource() == openMI){
             translations = new Translations();
-            JFileChooser fc = new JFileChooser();
             int approve = fc.showOpenDialog(null);
             if(approve == JFileChooser.APPROVE_OPTION){
                 fileName = fc.getSelectedFile().getName();
