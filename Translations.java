@@ -26,6 +26,8 @@ public class Translations{
             chinese.add(words[1]);
             numTranslations++;
         }
+        
+        fileReader.close();
     }
 
     //Get num words randomly
@@ -33,15 +35,15 @@ public class Translations{
     public String[] getRandomWords(int num){
         if(num > numTranslations) return null;
         String[] result = new String[num*2];
-	
-	//Shuffle arrays of english and chinese words
-	shuffleArrays();
+
+        //Shuffle arrays of english and chinese words
+        shuffleArrays();
 
         //Choose ArrayList indices without repeating
         for(int i = 0; i < num;){
-           result[2*i] = english.get(i);
-           result[2*i+1] = chinese.get(i);
-           i++;
+            result[2*i] = english.get(i);
+            result[2*i+1] = chinese.get(i);
+            i++;
         }
 
         return result;
@@ -51,29 +53,22 @@ public class Translations{
         return numTranslations;
     }
 
-
     //swaps both english and chinese words at indexes 1 and 2
     public void swap(int index1, int index2){
-      String temp = english.get(index1);
-      english.set(index1, english.get(index2));
-      english.set(index2, temp);
+        String temp = english.get(index1);
+        english.set(index1, english.get(index2));
+        english.set(index2, temp);
 
-      temp = chinese.get(index1);
-      chinese.set(index1, chinese.get(index2));
-      chinese.set(index2, chinese.get(index1));
+        temp = chinese.get(index1);
+        chinese.set(index1, chinese.get(index2));
+        chinese.set(index2, temp);
     }
 
-
-   //shuffle array of chinese and english words
-   public void shuffleArrays(){
-     for(int i = numTranslations - 1; i > 0; i--){
-	int randomNum = rand.nextInt(numTranslations - 1);
-	swap(i, randomNum);
-     }
-
-
-
-   }
-
-
+    //shuffle array of chinese and english words
+    public void shuffleArrays(){
+        for(int i = numTranslations - 1; i > 0; i--){
+            int randomNum = rand.nextInt(numTranslations - 1);
+            swap(i, randomNum);
+        }
+    }
 }
