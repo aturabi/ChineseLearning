@@ -13,6 +13,9 @@ public class LearnChineseGUI implements ActionListener{
     int CENTER_WIDTH = 900;
     int CENTER_HEIGHT = 825;
     int FONT_SIZE = 24;
+    private int FONT_SIZE2 = 25;
+    private int FONT_SIZE3 = 25;   
+    private int FONT_SIZE4 = 25;
 
     //GUI components
     JFrame frame;
@@ -50,6 +53,12 @@ public class LearnChineseGUI implements ActionListener{
         CENTER_WIDTH = TOP_WIDTH;
         CENTER_HEIGHT = WINDOW_HEIGHT * 7 / 10;
         FONT_SIZE = WINDOW_WIDTH / 36;
+        FONT_SIZE2 = WINDOW_WIDTH/40;
+        FONT_SIZE3 = WINDOW_WIDTH/50;
+        FONT_SIZE4 = WINDOW_WIDTH/55;
+
+        Font topFont = new Font(Font.DIALOG, Font.PLAIN, FONT_SIZE3);
+        Font topFontSml = new Font(Font.DIALOG, Font.PLAIN, FONT_SIZE4);
 
         //Set up frame
         frame = new JFrame("Learn Chinese!  No file loaded");
@@ -58,6 +67,9 @@ public class LearnChineseGUI implements ActionListener{
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         //Set up menu bar
+        Font f = new Font("sans-serif", Font.PLAIN, FONT_SIZE2);
+        UIManager.put("Menu.font", topFont);
+        UIManager.put("MenuItem.font", topFont);
         menuBar = new JMenuBar();
         fileM = new JMenu("File");
         openMI = new JMenuItem("Open");
@@ -77,7 +89,9 @@ public class LearnChineseGUI implements ActionListener{
 
         JPanel langP = new JPanel();
         langP.setBorder(new TitledBorder("Select language"));
+        ((javax.swing.border.TitledBorder)langP.getBorder()).setTitleFont(topFontSml);
         langCB = new JComboBox();
+        langCB.setFont(topFont);
         langCB.insertItemAt("Show English", 0);
         langCB.insertItemAt("Show Chinese", 1);
         langCB.setEnabled(false); //Don't enable until file chosen
@@ -86,7 +100,9 @@ public class LearnChineseGUI implements ActionListener{
 
         JPanel numWordsP = new JPanel();
         numWordsP.setBorder(new TitledBorder("Number of words to display"));
+        ((javax.swing.border.TitledBorder)numWordsP.getBorder()).setTitleFont(topFontSml);
         numWordsCB = new JComboBox();
+        numWordsCB.setFont(topFont);
         numWordsCB.setEnabled(false);
         //numWordsCB.addActionListener(this);
         numWordsP.add(numWordsCB);
@@ -95,6 +111,7 @@ public class LearnChineseGUI implements ActionListener{
         goP.setLayout(new BorderLayout());
         goP.setBorder(new EmptyBorder(10, 10, 10, 10));
         goB = new JButton("Please choose a file first");
+        goB.setFont(topFont);
         goB.setEnabled(false);
         goB.addActionListener(this);
         goP.add(goB);
